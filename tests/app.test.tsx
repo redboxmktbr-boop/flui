@@ -1,8 +1,9 @@
 import { beforeEach, describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../src/App";
 import { emptyData } from "../src/domain";
+import { recentDays } from "../src/ProgressExperience";
 
 const fixture = vi.hoisted(() => ({
   loadData: vi.fn(),
@@ -29,11 +30,140 @@ vi.mock("../src/api", () => ({
   },
 }));
 beforeEach(() => {
+  vi.clearAllMocks();
   fixture.loadData.mockResolvedValue({ ...emptyData });
   fixture.addTask.mockResolvedValue(undefined);
   fixture.updateTask.mockResolvedValue(undefined);
   fixture.insert.mockResolvedValue(undefined);
   fixture.remove.mockResolvedValue(undefined);
+});
+
+const taskFixture = {
+  id: "task-1",
+  user_id: "owner",
+  title: "Separar documentos",
+  done: false,
+  priority: "normal",
+  due_date: null,
+  parent_id: null,
+  created_at: new Date().toISOString(),
+};
+describe("Novas interações do espaço pessoal", () => {
+  it("salva título, prioridade e prazo da tarefa juntos", async () => {
+    fixture.loadData.mockResolvedValue({ ...emptyData, tasks: [taskFixture] });
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText("Oi, Ana. Vamos com calma?");
+    await user.click(
+      screen.getByRole("button", { name: "Tarefas", exact: true }),
+    );
+    await user.click(
+      await screen.findByRole("button", {
+        name: "Separar documentos",
+        exact: true,
+      }),
+    );
+    await user.selectOptions(
+      screen.getByLabelText("Prioridade da tarefa"),
+      "high",
+    );
+    fireEvent.change(screen.getByLabelText("Prazo da tarefa"), {
+      target: { value: "2026-12-15" },
+    });
+    await user.click(screen.getByRole("button", { name: "Salvar ajustes" }));
+    await waitFor(() =>
+      expect(fixture.updateTask).toHaveBeenCalledWith("task-1", {
+        title: "Separar documentos",
+        priority: "high",
+        due_date: "2026-12-15",
+      }),
+    );
+  });
+  it("só transforma um pensamento em tarefa após a confirmação do usuário", async () => {
+    fixture.loadData.mockResolvedValue({
+      ...emptyData,
+      notes: [
+        {
+          id: "note-1",
+          user_id: "owner",
+          body: "Organizar a mochila",
+          created_at: new Date().toISOString(),
+        },
+      ],
+    });
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText("Oi, Ana. Vamos com calma?");
+    await user.click(
+      screen.getByRole("button", { name: "Minha mente", exact: true }),
+    );
+    await user.click(
+      await screen.findByRole("button", { name: /Transformar em tarefa/ }),
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Tarefa", exact: true }),
+    ).toHaveValue("Organizar a mochila");
+    expect(fixture.addTask).not.toHaveBeenCalled();
+    expect(fixture.remove).not.toHaveBeenCalled();
+    await user.click(
+      screen.getByRole("button", { name: "Adicionar", exact: true }),
+    );
+    await waitFor(() =>
+      expect(fixture.addTask).toHaveBeenCalledWith(
+        "owner",
+        "Organizar a mochila",
+        "normal",
+        null,
+        null,
+      ),
+    );
+  });
+  it("registra o dia escolhido no histórico de hábitos", async () => {
+    fixture.loadData.mockResolvedValue({
+      ...emptyData,
+      habits: [
+        {
+          id: "habit-1",
+          user_id: "owner",
+          title: "Beber água",
+          created_at: new Date().toISOString(),
+        },
+      ],
+    });
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText("Oi, Ana. Vamos com calma?");
+    await user.click(
+      screen.getByRole("button", { name: "Hábitos", exact: true }),
+    );
+    const day = recentDays()[0].key;
+    await user.click(
+      await screen.findByRole("button", {
+        name: `Registrar Beber água em ${day}`,
+      }),
+    );
+    await waitFor(() =>
+      expect(fixture.insert).toHaveBeenCalledWith("habit_checkins", {
+        user_id: "owner",
+        habit_id: "habit-1",
+        day,
+      }),
+    );
+  });
+  it("leva a tarefa selecionada para o modo foco", async () => {
+    fixture.loadData.mockResolvedValue({ ...emptyData, tasks: [taskFixture] });
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByText("Oi, Ana. Vamos com calma?");
+    await user.click(
+      await screen.findByRole("button", {
+        name: "Focar em Separar documentos",
+      }),
+    );
+    expect(screen.getByText("Um passo de cada vez:")).toBeVisible();
+    expect(screen.getByText("Separar documentos")).toBeVisible();
+    expect(fixture.updateTask).not.toHaveBeenCalled();
+  });
 });
 describe("Fluxos autenticados com serviço isolado", () => {
   it("envia os dados da nova tarefa e recarrega os dados persistidos", async () => {

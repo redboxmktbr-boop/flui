@@ -19,9 +19,11 @@ A chave publicável fica visível no código e no aplicativo por definição; el
 ## Implementado no código
 
 - Cadastro, login, sessão, logout e recuperação de senha com Supabase Auth.
-- Dashboard calculado a partir dos dados do usuário.
-- Tarefas com criação, edição do título, conclusão, exclusão, prioridade, prazo e um nível de subtarefas.
-- Captura e exclusão de pensamentos; hábitos com registro diário reversível.
+- Dashboard com atalhos visuais, progresso circular e dados reais do usuário.
+- Tela Evolução com seis pequenas conquistas calculadas dos registros atuais e gráfico interativo dos últimos sete dias. Sem pontuação fictícia ou histórico de conquistas permanente.
+- Tarefas com criação, edição de título, prioridade e prazo, conclusão, exclusão, prioridade, prazo e um nível de subtarefas.
+- Captura e exclusão de pensamentos, com conversão em tarefa mediante confirmação. Hábitos com calendário reversível dos últimos sete dias.
+- Busca e filtros de tarefas; seleção de uma tarefa como contexto do temporizador. Essa seleção é local e não cria vínculo no histórico de sessões.
 - Temporizador com pausa/retomada, horários absolutos para tolerar redução de frequência da aba e gravação explícita de sessões concluídas. Trocar de seção preserva o contador; recarregar ou fechar a página reinicia o contador. Não há alarme em segundo plano garantido.
 - Modo sobrecarga com navegação pelo teclado e próximo passo priorizado.
 - PWA instalável com cache apenas do aplicativo e fontes. As APIs do Supabase e os dados pessoais não são armazenados pelo service worker. Alterações exigem conexão; não há fila offline nesta fase.
@@ -41,6 +43,6 @@ Qualquer hospedagem estática com HTTPS pode servir `dist/`. No Vercel use o pre
 
 1. Configurar o endereço de publicação e as URLs de Auth; validar confirmação de e-mail e recuperação com caixa postal real.
 2. IA multimodelo em Edge Functions: JWT verificado, autorização pelo usuário, chaves apenas no servidor, limites de uso, timeout, consentimento explícito antes de enviar pensamentos e escolha/roteamento por tarefa. Nesta versão a área Assistente explica que a IA ainda não está conectada; não produz respostas simuladas.
-3. Progresso de hábitos, edição de prioridade/prazo, lembretes opt-in e fila offline com resolução de conflitos, após validar o núcleo.
+3. Lembretes opt-in e fila offline com resolução de conflitos, após validar o núcleo.
 
 Referência de segurança: [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).

@@ -1,0 +1,1791 @@
+/* Shared workspace components: one spacing scale, consistent controls and calm feedback. */
+.app {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --surface: #fff;
+  --text-soft: #7b718f;
+  --stroke: #eae4f3;
+  color: #271746;
+  background: #f6f3fb;
+}
+.app button {
+  transition:
+    background-color 0.18s,
+    border-color 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
+}
+.app button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.app .sidebar {
+  width: 240px;
+  padding: 26px 18px 20px;
+  background: linear-gradient(175deg, #593d9b, #3b246e 85%);
+  border-radius: 0;
+}
+.app .sidebar .brand {
+  width: 94px;
+  margin-left: 15px;
+}
+.app .sidebar .brand-caption {
+  font-size: 11px;
+  margin: 9px 0 0 17px;
+  color: #c7b9e4;
+}
+.app .sidebar nav {
+  margin-top: 30px;
+  gap: 6px;
+}
+.app .sidebar nav button {
+  font-size: 13px;
+  min-height: 46px;
+  border-radius: 12px;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #dfd5ef;
+}
+.app .sidebar nav button.active {
+  background: #ffffff18;
+  box-shadow: inset 3px 0 #ffda55;
+  color: white;
+}
+.app .sidebar nav small {
+  font-size: 11px;
+  padding: 4px 6px;
+  background: #ffffff1a;
+  color: #e4daf2;
+}
+.app .soft-callout {
+  border-radius: 18px;
+  background: #ffffff0a;
+  padding: 18px;
+}
+.app .soft-callout h4 {
+  font-size: 13px;
+}
+.app .soft-callout p {
+  font-size: 11px;
+  color: #d3c5e8;
+}
+.app .soft-callout button {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.app .workspace {
+  margin-left: 240px;
+}
+.app .topbar {
+  height: 76px;
+  padding: 0 38px;
+  border-bottom: 1px solid #ebe5f2;
+  background: #fbf9ff;
+  font-size: 12px;
+}
+.app .topbar .profile {
+  font-size: 11px;
+}
+.app .main {
+  max-width: 1320px;
+  padding: 36px 38px 0;
+}
+.app .page-heading {
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.app .page-heading h1 {
+  color: #2b174d;
+  font-size: clamp(23px, 2.1vw, 31px);
+  font-weight: 600;
+  margin: 8px 0;
+  line-height: 1.35;
+}
+.app .page-heading p {
+  font-size: 13px;
+  color: #8a7d9c;
+}
+.app .page-heading .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #a296ad;
+}
+.app h2,
+.app h3,
+.app h4 {
+  letter-spacing: -0.025em;
+}
+.app h3 {
+  color: #33204e;
+  font-size: 16px;
+}
+.app p {
+  font-size: 13px;
+  color: #8a7d9a;
+  line-height: 1.8;
+}
+.app .overload-button {
+  border: 1px solid #e3d9ef;
+  padding: 11px 15px;
+  background: #fff;
+  color: #7d659f;
+  border-radius: 12px;
+  font-size: 11px;
+}
+.app .card,
+.app .stat {
+  border: 1px solid var(--stroke);
+  border-radius: 22px;
+  box-shadow: 0 8px 28px -22px #39205830;
+}
+.app .card {
+  padding: 25px;
+  margin-bottom: 22px;
+}
+.app .section-title {
+  margin-bottom: 18px;
+  gap: 14px;
+}
+.app .section-title h3 {
+  font-size: 15px;
+}
+.app .section-title .link {
+  font-size: 11px;
+}
+.app .primary {
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 12px;
+  background: #7856c2;
+  box-shadow: 0 5px 12px #7454b315;
+}
+.app .primary:hover {
+  background: #6745b0;
+  box-shadow: 0 6px 16px #7454b325;
+}
+.app .link {
+  color: #7a58b7;
+  font-size: 12px;
+  gap: 6px;
+}
+.app input,
+.app textarea,
+.app select {
+  border: 1px solid #e4dced;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #49325e;
+  background: #fffeff;
+}
+.app input::placeholder,
+.app textarea::placeholder {
+  color: #b3a8be;
+}
+.app label {
+  font-size: 12px;
+  color: #79698b;
+  font-weight: 500;
+}
+.app .welcome {
+  position: relative;
+  background: linear-gradient(115deg, #efe7ff, #e9ddfc 68%, #f5ecff);
+  border: 1px solid #e4d8f5;
+  border-radius: 26px;
+  padding: 30px 34px;
+  min-height: 265px;
+  gap: 20px;
+}
+.app .welcome h2 {
+  font-size: clamp(27px, 2.65vw, 37px);
+  line-height: 1.3;
+  color: #46266d;
+  margin: 14px 0 12px;
+}
+.app .welcome p {
+  font-size: 12px;
+  color: #8d72a6;
+  line-height: 1.8;
+}
+.app .welcome .pill {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  background: #fffbef;
+  color: #998149;
+  border: 1px solid #faefd2;
+  padding: 6px 10px;
+}
+.app .welcome .primary {
+  background: #fff;
+  border: 1px solid #e2d2f3;
+  color: #7750a8;
+  min-height: 40px;
+  font-size: 11px;
+  border-radius: 11px;
+  box-shadow: 0 4px 12px #73519908;
+}
+.app .welcome-mascot {
+  padding: 0 20px;
+  flex: 0 0 210px;
+}
+.app .welcome-mascot .mascot {
+  width: 200px;
+  height: 180px;
+}
+.app .mascot-bubble {
+  position: relative;
+  margin-top: 0;
+  font-size: 11px;
+  background: #ffffffc4;
+  padding: 7px 12px;
+  color: #8a70a1;
+}
+.app .spark {
+  font-size: 24px;
+  color: #e9ba45;
+}
+.app .s1 {
+  right: 16px;
+  top: 5px;
+}
+.app .s2 {
+  left: 14px;
+  bottom: 45px;
+}
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 22px 0;
+}
+.quick-action {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 7px;
+  padding: 19px;
+  border: 1px solid #e9e1f3;
+  border-radius: 19px;
+  background: #fff;
+  min-height: 143px;
+}
+.quick-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 24px #4e2f7910;
+  border-color: #d2bce9;
+}
+.quick-action > span {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 12px;
+  margin-bottom: 4px;
+  background: #f0e8fc;
+  color: #9071b8;
+}
+.quick-action strong {
+  font-size: 12px;
+  color: #614674;
+  font-weight: 600;
+}
+.quick-action small {
+  font-size: 11px;
+  color: #a092aa;
+}
+.quick-action .quick-arrow {
+  position: absolute;
+  right: 16px;
+  top: 25px;
+  color: #c3afda;
+}
+.quick-action.peach > span {
+  background: #fff0e8;
+  color: #ca987e;
+}
+.quick-action.sky > span {
+  background: #edf4ff;
+  color: #8ba8cc;
+}
+.quick-action.butter > span {
+  background: #fff7d8;
+  color: #c0a258;
+}
+.app .stats {
+  gap: 14px;
+  margin: 0 0 22px;
+}
+.app .stat {
+  padding: 18px 22px;
+  gap: 14px;
+}
+.app .stat strong {
+  color: #674c86;
+  font-size: 26px;
+  font-weight: 500;
+}
+.app .stat div > span {
+  color: #ab9bb6;
+  font-size: 11px;
+}
+.app .stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+}
+.app .dashboard-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 22px;
+}
+.app .dashboard-grid .card {
+  margin: 0;
+}
+.app .empty {
+  padding: 28px 12px;
+}
+.app .empty p {
+  font-size: 12px;
+  color: #a294ae;
+}
+.app .empty-icon {
+  color: #ba9cd6;
+  background: #f7f1fc;
+}
+.visual-task-progress {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  min-height: 170px;
+}
+.progress-orbit {
+  flex: 0 0 116px;
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  padding: 8px;
+  background: conic-gradient(#ac94d1 var(--fill), #f0e9f7 0);
+}
+.progress-orbit > div {
+  height: 100%;
+  width: 100%;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.progress-orbit strong {
+  font-size: 29px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  color: #7d5b9e;
+}
+.progress-orbit span {
+  color: #b5a4c2;
+  font-size: 11px;
+}
+.visual-task-progress .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #b19abf;
+}
+.visual-task-progress h3 {
+  font-size: 14px;
+  margin: 8px 0;
+}
+.visual-task-progress p {
+  font-size: 11px;
+}
+.visual-task-progress .link {
+  font-size: 11px;
+  margin-top: 10px;
+}
+.app .task-row {
+  padding: 18px 0;
+  gap: 10px;
+  border-color: #f0eaf5;
+  align-items: center;
+}
+.app .task-title {
+  font-size: 13px;
+  color: #674d7b;
+  line-height: 1.7;
+}
+.app .task-meta {
+  gap: 8px;
+  margin-top: 5px;
+}
+.app .task-meta > span {
+  font-size: 11px;
+}
+.app .check {
+  color: #c0add1;
+}
+.app .is-done .check {
+  color: #92bea9;
+}
+.app .is-done .task-title {
+  color: #b6a9bf;
+}
+.app .icon-button {
+  border-radius: 9px;
+  color: #b09bc0;
+}
+.app .icon-button:hover {
+  background: #f5eefb;
+  color: #8c6bab;
+}
+.app .focus-task-button {
+  color: #a98bc8;
+}
+.app .task-content {
+  min-width: 0;
+}
+.app .task-row.child {
+  margin-left: 24px;
+  padding-left: 12px;
+}
+.app .task-search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #e9dfef;
+  border-radius: 12px;
+  background: #fdfaff;
+  margin-bottom: 16px;
+  color: #b9a0ca;
+}
+.app .task-search input {
+  border: 0;
+  background: none;
+  padding-left: 0;
+}
+.app .tabs {
+  border-bottom: 1px solid #f0e9f6;
+  padding-bottom: 14px;
+  gap: 5px;
+}
+.app .tabs button {
+  font-size: 11px;
+  padding: 9px 13px;
+  border-radius: 10px;
+}
+.app .tabs .selected {
+  background: #f0e8fa;
+  color: #8d6cab;
+}
+.task-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+}
+.task-editor-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.task-editor .actions {
+  justify-content: flex-start;
+  gap: 15px;
+}
+.app .task-row:has(.task-editor) {
+  align-items: flex-start;
+}
+.app .task-editor .primary {
+  min-height: 37px;
+  padding: 9px 14px;
+  font-size: 11px;
+}
+.app .task-form {
+  gap: 14px;
+}
+.app .task-form .grow {
+  min-width: 200px;
+}
+.app .quick-capture {
+  background: #fffcf9;
+}
+.app .quick-capture p {
+  font-size: 11px;
+}
+.app .quick-capture textarea {
+  font-size: 12px;
+  min-height: 93px;
+  border-color: #f0e6de;
+  border-radius: 13px;
+}
+.app .capture-button {
+  font-size: 11px;
+  padding-top: 9px;
+  color: #c19d83;
+}
+.app .focus-shortcut h3 {
+  font-size: 14px;
+}
+.app .focus-shortcut p {
+  font-size: 11px;
+}
+.app .gentle {
+  font-size: 11px;
+  color: #b1a2bd;
+  line-height: 1.8;
+}
+.app .notes-grid {
+  gap: 20px;
+}
+.app .note {
+  padding: 24px;
+  background: #fffdf9;
+  border-color: #f0e7da;
+}
+.app .note p {
+  color: #8f7d89;
+  font-size: 14px;
+  line-height: 1.9;
+}
+.app .note footer {
+  margin-top: 18px;
+}
+.note-to-task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 11px;
+  color: #a685a0;
+  background: #f7eff5;
+  border: 1px solid #efe3ed;
+}
+.habit-card {
+  padding: 16px 0 21px;
+  border-bottom: 1px solid #eee6f4;
+}
+.habit-card:last-of-type {
+  border-bottom: none;
+}
+.app .habit-card .task-row {
+  padding: 0 0 15px;
+  border-bottom: none;
+}
+.habit-card .task-content strong {
+  font-size: 14px;
+  font-weight: 500;
+  color: #735884;
+}
+.habit-card .gentle {
+  margin-top: 3px;
+}
+.habit-week-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 500px;
+}
+.habit-week-days button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 0 0;
+  color: #c0afca;
+  border: 1px solid transparent;
+  border-radius: 13px;
+}
+.habit-week-days button:hover {
+  background: #f8f3fc;
+}
+.habit-week-days button > span {
+  font-size: 11px;
+}
+.habit-week-days i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: #f7f1fa;
+  color: #b7a2c5;
+  font-style: normal;
+  font-size: 12px;
+}
+.habit-week-days .checked i {
+  color: #689b83;
+  background: #e5f4ec;
+}
+.habit-week-days .is-today {
+  border-color: #e4d7ee;
+}
+.habit-week-days small {
+  font-size: 11px;
+  min-height: 12px;
+}
+.habit-week p {
+  font-size: 11px;
+  color: #b2a2bd;
+  margin-top: 9px;
+}
+.focus-target {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #f5eefb;
+  color: #a086b4;
+  padding: 12px 15px;
+  border-radius: 12px;
+  margin: 16px 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.focus-target strong {
+  font-weight: 500;
+  color: #8b6ca1;
+}
+.app .focus-card {
+  padding: 32px;
+}
+.app .focus-card > p {
+  font-size: 12px;
+}
+.app .duration {
+  gap: 8px;
+}
+.app .duration button {
+  font-size: 11px;
+}
+.app .timer {
+  border-color: #e9dff4;
+  background: #fefbff;
+  outline-color: #e0d0ee;
+}
+.app .timer strong {
+  color: #8f71aa;
+}
+.app .timer span {
+  color: #b6a1c7;
+}
+.app .focus-tip {
+  background: linear-gradient(145deg, #fff, #faf5ff);
+}
+.app .mint-note {
+  border: 1px solid #dfeee7;
+  background: #f4faf7;
+  color: #9db9aa;
+}
+.evolution-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 28px 35px;
+  border-radius: 25px;
+  background: linear-gradient(110deg, #ede4ff, #f7eafa);
+  border: 1px solid #e6d8ef;
+  margin-bottom: 22px;
+}
+.evolution-hero .pill {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  background: #fff8e3;
+  border-color: #faedc7;
+  color: #b39a58;
+}
+.evolution-hero h2 {
+  font-size: 29px;
+  line-height: 1.35;
+  color: #704c8a;
+  margin: 14px 0 12px;
+  max-width: 400px;
+}
+.evolution-hero p {
+  font-size: 12px;
+  color: #a082b1;
+}
+.evolution-hero .mascot {
+  width: 180px;
+  height: 170px;
+}
+.achievement-total {
+  display: inline-block;
+  margin-top: 18px;
+  color: #af8cc0;
+  font-size: 11px;
+  padding: 7px 11px;
+  border: 1px solid #e6d7ed;
+  border-radius: 20px;
+  background: #ffffff66;
+}
+.evolution-totals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.evolution-totals > div {
+  padding: 22px;
+  border: 1px solid #e8deef;
+  border-radius: 20px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+.evolution-totals svg {
+  grid-row: 1/3;
+  color: #ae8cc8;
+  width: 24px;
+}
+.evolution-totals > div:nth-child(2) svg {
+  color: #a6bddb;
+}
+.evolution-totals > div:nth-child(3) svg {
+  color: #9fc1ae;
+}
+.evolution-totals strong {
+  font-size: 26px;
+  color: #8969a1;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.evolution-totals small {
+  font-size: 12px;
+}
+.evolution-totals span {
+  font-size: 11px;
+  color: #b4a1c0;
+}
+.app .week-overview {
+  padding: 26px 30px;
+}
+.week-overview .eyebrow {
+  font-size: 11px;
+  color: #b3a0c2;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.app .week-overview h3 {
+  color: #8e71a2;
+  font-size: 15px;
+}
+.week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+  padding: 5px 0 20px;
+}
+.week-chart button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 6px 20px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  gap: 4px;
+}
+.week-chart button:hover {
+  background: #fcf8ff;
+}
+.week-chart .selected {
+  background: #fbf5ff;
+  border-color: #ede1f4;
+}
+.chart-column {
+  display: flex;
+  align-items: flex-end;
+  height: 115px;
+  width: 28px;
+  padding-bottom: 6px;
+}
+.chart-column i {
+  width: 100%;
+  background: #f0e7f7;
+  min-height: 3px;
+  border-radius: 8px 8px 5px 5px;
+  transition: height 0.3s;
+}
+.chart-column .has-focus {
+  background: linear-gradient(#d6bce9, #ab8aca);
+}
+.week-chart strong {
+  font-size: 11px;
+  color: #a38ab5;
+  font-weight: 500;
+}
+.week-chart small {
+  font-size: 11px;
+  color: #c0afcb;
+}
+.week-chart b {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #95c5aa;
+  bottom: 8px;
+}
+.selected-day-detail {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 16px;
+  background: #fcf9ff;
+  border-radius: 12px;
+  color: #b19bc0;
+  font-size: 11px;
+}
+.selected-day-detail span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.selected-day-detail strong {
+  font-weight: 600;
+  color: #9372a8;
+}
+.week-overview > .gentle {
+  text-align: center;
+  font-size: 11px;
+}
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+}
+.achievement-card {
+  position: relative;
+  padding: 23px;
+  background: #fff;
+  border: 1px solid #e9e0ef;
+  border-radius: 21px;
+}
+.achievement-icon {
+  display: grid;
+  place-items: center;
+  height: 47px;
+  width: 47px;
+  border-radius: 16px;
+  background: #f5effa;
+  color: #c4afd6;
+  margin-bottom: 20px;
+}
+.achievement-card > .badge {
+  position: absolute;
+  top: 27px;
+  right: 18px;
+  font-size: 11px;
+  color: #bba6c8;
+  background: #f8f3fb;
+}
+.achievement-card h4 {
+  font-size: 14px;
+  color: #a48ab5;
+  font-weight: 500;
+}
+.achievement-card p {
+  font-size: 11px;
+  margin: 7px 0 13px;
+  color: #b6a2c3;
+  min-height: 38px;
+}
+.achievement-card progress {
+  height: 5px;
+  margin-top: 0;
+}
+.achievement-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #ad98bc;
+}
+.achievement-bottom small {
+  font-size: 11px;
+}
+.app .achievement-bottom .link {
+  font-size: 11px;
+}
+.achievement-card.unlocked {
+  background: linear-gradient(145deg, #fffdf7, #fff);
+  border-color: #f0e3bd;
+}
+.achievement-card.unlocked .achievement-icon {
+  background: #fff3d5;
+  color: #c8aa5d;
+}
+.achievement-card.unlocked h4 {
+  color: #99815a;
+}
+.achievement-card.unlocked > .badge {
+  color: #b9a26c;
+  background: #fff5dd;
+}
+.achievement-card.unlocked .achievement-bottom > svg {
+  color: #a8c6b2;
+}
+.victory-toast {
+  position: fixed;
+  z-index: 90;
+  top: 22px;
+  left: calc(50% + 100px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 20px;
+  color: #8b6ba5;
+  background: #fffdf8;
+  border: 1px solid #f0e0b5;
+  box-shadow: 0 12px 30px #44266d15;
+  border-radius: 18px;
+  font-size: 12px;
+  max-width: calc(100vw - 40px);
+  animation: victory-in 0.28s ease-out;
+}
+.victory-toast > svg {
+  color: #b69a56;
+}
+.victory-toast button {
+  display: flex;
+  padding: 5px;
+  color: #b9a7c4;
+}
+.mobile-dock {
+  display: none;
+}
+.app .main-footer {
+  font-size: 11px;
+  color: #bcafc6;
+  padding: 30px 0 25px;
+}
+.app .main-footer span {
+  font-size: 11px;
+}
+.app .overload {
+  padding: 22px;
+  background: radial-gradient(ellipse at 50% 20%, #fcf8ff, #f0e6fc);
+}
+.app .overload section {
+  max-width: 540px;
+  padding: 15px 0;
+}
+.app .overload .breathing-orb {
+  width: 150px;
+  height: 150px;
+  background: none;
+  box-shadow: none;
+  margin: 20px auto;
+}
+.overload .breathing-orb .mascot {
+  width: 180px;
+  height: 170px;
+}
+.calm-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 24px 0;
+}
+.calm-choices button {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  border: 1px solid #e6d5ee;
+  background: #ffffffc4;
+  border-radius: 15px;
+  padding: 15px 18px;
+  text-align: left;
+  color: #a386b7;
+  font-size: 12px;
+}
+.calm-choices button span {
+  flex: 1;
+}
+.calm-choices button:hover {
+  background: #fff;
+  border-color: #c9aedc;
+}
+@keyframes victory-in {
+  from {
+    opacity: 0;
+    margin-top: -8px;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+@media (max-width: 1200px) {
+  .app .main {
+    padding: 28px 26px 0;
+  }
+  .app .topbar {
+    padding: 0 26px;
+  }
+  .quick-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .quick-action {
+    min-height: 113px;
+    padding: 16px 18px;
+  }
+  .quick-action > span {
+    margin-bottom: 2px;
+  }
+  .app .welcome {
+    padding: 26px;
+  }
+  .app .welcome-mascot {
+    flex-basis: 165px;
+    padding: 0;
+  }
+  .app .welcome-mascot .mascot {
+    width: 170px;
+    height: 160px;
+  }
+  .app .welcome p {
+    max-width: 260px;
+  }
+  .app .desktop-break {
+    display: none;
+  }
+  .app .stat {
+    padding: 16px;
+  }
+  .app .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .visual-task-progress {
+    min-height: 125px;
+  }
+  .achievement-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .evolution-hero h2 {
+    font-size: 26px;
+  }
+  .evolution-totals > div {
+    padding: 18px;
+    column-gap: 12px;
+  }
+  .evolution-totals span {
+    font-size: 11px;
+  }
+}
+@media (max-width: 950px) and (min-width: 761px) {
+  .app .sidebar {
+    width: 200px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .app .workspace {
+    margin-left: 200px;
+  }
+  .app .sidebar nav button {
+    padding: 12px;
+    font-size: 12px;
+  }
+  .app .welcome-mascot {
+    flex-basis: 130px;
+  }
+  .app .welcome-mascot .mascot {
+    width: 140px;
+    height: 135px;
+  }
+  .app .mascot-bubble {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .app .welcome h2 {
+    font-size: 27px;
+  }
+  .app .welcome p {
+    font-size: 11px;
+  }
+  .app .page-heading {
+    align-items: flex-start;
+  }
+  .app .page-heading h1 {
+    font-size: 24px;
+  }
+  .app .overload-button {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .app .stats {
+    gap: 9px;
+  }
+  .app .stat {
+    padding: 15px 10px;
+    gap: 9px;
+  }
+  .app .stat-icon {
+    width: 31px;
+    height: 31px;
+  }
+  .app .stat strong {
+    font-size: 23px;
+  }
+  .app .stat div > span {
+    font-size: 11px;
+  }
+  .evolution-totals {
+    gap: 9px;
+  }
+  .evolution-totals > div {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+  .evolution-hero {
+    padding: 25px;
+  }
+  .evolution-hero .mascot {
+    width: 120px;
+    height: 130px;
+  }
+}
+@media (max-width: 760px) {
+  .app .sidebar {
+    width: 252px;
+    top: 65px;
+    bottom: 75px;
+    overflow-y: auto;
+    box-shadow: 20px 0 60px #34205222;
+  }
+  .app .workspace {
+    margin-left: 0;
+  }
+  .app .topbar {
+    height: 65px;
+    padding: 0 19px;
+    gap: 10px;
+  }
+  .app .topbar > span {
+    font-size: 11px;
+  }
+  .app .topbar .profile {
+    font-size: 11px;
+  }
+  .app .main {
+    padding: 25px 18px 88px;
+  }
+  .app .page-heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 23px;
+  }
+  .app .page-heading h1 {
+    font-size: 25px;
+    line-height: 1.4;
+  }
+  .app .page-heading p {
+    font-size: 12px;
+    max-width: 315px;
+  }
+  .app .page-heading .eyebrow {
+    font-size: 11px;
+  }
+  .app .overload-button {
+    font-size: 11px;
+    margin: 0;
+    min-height: 39px;
+    padding: 9px 13px;
+  }
+  .app .welcome {
+    padding: 24px;
+    min-height: 264px;
+    border-radius: 24px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .app .welcome h2 {
+    font-size: 29px;
+    line-height: 1.25;
+    max-width: 210px;
+    margin-top: 14px;
+  }
+  .app .welcome p {
+    font-size: 11px;
+    max-width: 188px;
+    padding-right: 3px;
+  }
+  .app .welcome .pill {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+  .app .welcome .primary {
+    font-size: 11px;
+    padding: 10px 13px;
+  }
+  .app .welcome-mascot {
+    position: absolute;
+    right: 7px;
+    top: 72px;
+    width: 123px;
+    padding: 0;
+    opacity: 1;
+  }
+  .app .welcome-mascot .mascot {
+    width: 120px;
+    height: 125px;
+  }
+  .app .mascot-bubble {
+    display: none;
+  }
+  .app .s1 {
+    font-size: 17px;
+    right: 3px;
+    top: -12px;
+  }
+  .app .s2 {
+    font-size: 17px;
+    left: 12px;
+    bottom: -15px;
+  }
+  .quick-actions {
+    margin: 17px 0;
+    gap: 11px;
+  }
+  .quick-action {
+    min-height: 130px;
+    padding: 17px;
+    border-radius: 18px;
+  }
+  .quick-action strong {
+    font-size: 11px;
+  }
+  .quick-action small {
+    font-size: 11px;
+  }
+  .quick-action > span {
+    width: 33px;
+    height: 33px;
+    border-radius: 11px;
+  }
+  .quick-action > span svg {
+    width: 20px;
+  }
+  .quick-action .quick-arrow {
+    top: 25px;
+    right: 14px;
+    width: 14px;
+  }
+  .app .stats {
+    gap: 8px;
+    margin-bottom: 17px;
+  }
+  .app .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 12px;
+    gap: 9px;
+    text-align: left;
+    border-radius: 17px;
+  }
+  .app .stat-icon {
+    width: 31px;
+    height: 31px;
+    margin: 0;
+    border-radius: 10px;
+  }
+  .app .stat-icon svg {
+    width: 17px;
+  }
+  .app .stat strong {
+    font-size: 24px;
+  }
+  .app .stat strong small {
+    font-size: 11px;
+  }
+  .app .stat div > span {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .app .dashboard-grid {
+    gap: 17px;
+  }
+  .app .card {
+    padding: 21px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .app .section-title {
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .app .section-title h3 {
+    font-size: 14px;
+  }
+  .app .section-title .link {
+    font-size: 11px;
+  }
+  .app .task-row {
+    gap: 4px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+  .app .task-row .task-content {
+    flex: 1;
+    min-width: calc(100% - 145px);
+  }
+  .app .task-title {
+    font-size: 12px;
+  }
+  .app .task-meta > span {
+    font-size: 11px;
+  }
+  .app .task-row.child {
+    margin-left: 11px;
+    padding-left: 7px;
+  }
+  .app .task-row .icon-button {
+    padding: 7px;
+  }
+  .app .task-row .icon-button svg {
+    width: 15px;
+  }
+  .app .task-form > label:not(.grow) {
+    width: auto;
+    flex: 1;
+    min-width: 100px;
+  }
+  .app .task-form > .grow {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .app .task-form > .primary {
+    width: 100%;
+  }
+  .app .tabs {
+    gap: 3px;
+    flex-wrap: wrap;
+  }
+  .app .tabs button {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+  .visual-task-progress {
+    gap: 17px;
+    min-height: 135px;
+  }
+  .progress-orbit {
+    width: 92px;
+    height: 92px;
+    flex-basis: 92px;
+    padding: 6px;
+  }
+  .progress-orbit strong {
+    font-size: 25px;
+  }
+  .progress-orbit span {
+    font-size: 11px;
+  }
+  .visual-task-progress h3 {
+    font-size: 13px;
+  }
+  .visual-task-progress p {
+    font-size: 11px;
+  }
+  .visual-task-progress .eyebrow {
+    font-size: 11px;
+  }
+  .app .visual-task-progress .link {
+    font-size: 11px;
+  }
+  .habit-week-days {
+    gap: 4px;
+  }
+  .habit-week-days i {
+    width: 31px;
+    height: 31px;
+    font-size: 11px;
+  }
+  .habit-week-days button > span {
+    font-size: 11px;
+  }
+  .habit-week p {
+    font-size: 11px;
+  }
+  .habit-card .task-content strong {
+    font-size: 13px;
+  }
+  .app .focus-card {
+    padding: 24px 18px;
+  }
+  .app .focus-card h2 {
+    font-size: 22px;
+  }
+  .app .focus-card .timer {
+    width: 210px;
+    height: 210px;
+    margin-top: 22px;
+  }
+  .app .timer strong {
+    font-size: 43px;
+  }
+  .focus-target {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .evolution-hero {
+    padding: 23px;
+    position: relative;
+    min-height: 248px;
+    overflow: hidden;
+  }
+  .evolution-hero h2 {
+    font-size: 25px;
+    max-width: 205px;
+  }
+  .evolution-hero p {
+    font-size: 11px;
+    max-width: 195px;
+  }
+  .evolution-hero .mascot {
+    position: absolute;
+    width: 112px;
+    height: 120px;
+    right: 5px;
+    top: 63px;
+  }
+  .evolution-hero .pill {
+    font-size: 11px;
+  }
+  .achievement-total {
+    font-size: 11px;
+    margin-top: 17px;
+  }
+  .evolution-totals {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .evolution-totals > div {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px 12px;
+    gap: 7px;
+    border-radius: 17px;
+  }
+  .evolution-totals svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 3px;
+  }
+  .evolution-totals strong {
+    font-size: 24px;
+  }
+  .evolution-totals span {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .app .week-overview {
+    padding: 21px 16px;
+  }
+  .week-chart {
+    gap: 4px;
+    padding-bottom: 14px;
+  }
+  .week-chart button {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .chart-column {
+    height: 95px;
+    width: 20px;
+  }
+  .week-chart strong {
+    font-size: 11px;
+  }
+  .selected-day-detail {
+    gap: 12px;
+    font-size: 11px;
+    padding: 13px 9px;
+  }
+  .selected-day-detail svg {
+    width: 14px;
+  }
+  .app .week-overview .gentle {
+    font-size: 11px;
+  }
+  .achievement-grid {
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .achievement-card {
+    padding: 17px;
+    border-radius: 18px;
+  }
+  .achievement-card > .badge {
+    position: static;
+    display: inline-block;
+    font-size: 11px;
+    margin-bottom: 13px;
+    padding: 4px 7px;
+  }
+  .achievement-icon {
+    height: 37px;
+    width: 37px;
+    margin-bottom: 13px;
+    border-radius: 12px;
+  }
+  .achievement-icon svg {
+    width: 21px;
+  }
+  .achievement-card h4 {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .achievement-card p {
+    font-size: 11px;
+    min-height: 48px;
+    line-height: 1.8;
+  }
+  .app .achievement-bottom .link {
+    font-size: 11px;
+  }
+  .achievement-bottom {
+    gap: 3px;
+  }
+  .achievement-bottom small {
+    font-size: 11px;
+  }
+  .achievement-bottom .link svg {
+    width: 11px;
+  }
+  .victory-toast {
+    top: 13px;
+    left: 50%;
+    width: calc(100vw - 34px);
+    padding: 14px 15px;
+    font-size: 11px;
+    gap: 9px;
+  }
+  .mobile-dock {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    position: fixed;
+    z-index: 30;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 10px max(10px, env(safe-area-inset-bottom));
+    background: #fffdfefa;
+    border-top: 1px solid #e9dfee;
+    box-shadow: 0 -6px 24px #55326d04;
+    backdrop-filter: blur(16px);
+  }
+  .mobile-dock button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    color: #c2b1cc;
+    min-height: 45px;
+    font-size: 11px;
+    border-radius: 12px;
+    padding: 4px;
+  }
+  .mobile-dock button[aria-current="page"] {
+    color: #9471b3;
+    background: #f6effb;
+  }
+  .app .main-footer {
+    display: block;
+    font-size: 11px;
+    padding: 26px 0 20px;
+  }
+  .app .main-footer span {
+    float: right;
+    font-size: 11px;
+  }
+  .app .overload {
+    z-index: 100;
+  }
+  .app .overload section {
+    padding-top: 0;
+  }
+  .app .overload h1 {
+    font-size: 27px;
+  }
+  .app .overload > section > p {
+    font-size: 12px;
+  }
+  .calm-choices button {
+    font-size: 11px;
+    padding: 13px 14px;
+  }
+  .app .overload .breathing-orb {
+    margin: 15px auto;
+    width: 115px;
+    height: 115px;
+  }
+  .overload .breathing-orb .mascot {
+    width: 130px;
+    height: 125px;
+  }
+}
+@media (max-width: 360px) {
+  .app .main {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .app .welcome {
+    padding: 21px;
+  }
+  .app .welcome h2 {
+    font-size: 26px;
+    max-width: 180px;
+  }
+  .app .welcome p {
+    max-width: 161px;
+  }
+  .app .welcome-mascot {
+    width: 95px;
+    top: 90px;
+  }
+  .app .welcome-mascot .mascot {
+    width: 100px;
+    height: 110px;
+  }
+  .quick-action {
+    padding: 15px;
+  }
+  .quick-action strong {
+    font-size: 11px;
+  }
+  .app .stat {
+    padding: 13px 10px;
+  }
+  .achievement-grid {
+    grid-template-columns: 1fr;
+  }
+  .evolution-hero h2 {
+    font-size: 23px;
+    max-width: 180px;
+  }
+  .evolution-hero p {
+    max-width: 170px;
+  }
+  .evolution-hero .mascot {
+    width: 92px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app button,
+  .chart-column i {
+    transition: none;
+  }
+  .victory-toast {
+    animation: none;
+  }
+}
+
+/* Legibility is part of the design system, including muted information. */
+.app p {
+  color: #81738f;
+}
+.app .gentle,
+.app .empty p {
+  color: #94829f;
+}
+.quick-action strong {
+  font-size: 13px;
+}
+.quick-action small,
+.app .stat div > span {
+  color: #96829f;
+}
+.app .task-title {
+  font-size: 14px;
+}
+.achievement-card h4 {
+  color: #765987;
+  font-size: 14px;
+}
+.achievement-card p {
+  color: #937c9f;
+  font-size: 12px;
+  min-height: 46px;
+}
+.achievement-card.unlocked h4 {
+  color: #857049;
+}
+.habit-week-days button > span,
+.week-chart strong {
+  color: #97809f;
+}
+@media (max-width: 760px) {
+  .quick-action strong {
+    font-size: 12px;
+  }
+  .app .task-title {
+    font-size: 13px;
+  }
+  .achievement-card p {
+    min-height: 62px;
+  }
+  .mobile-dock button {
+    font-size: 10px;
+  }
+  .visual-task-progress p {
+    font-size: 12px;
+  }
+  .app .welcome p {
+    font-size: 12px;
+  }
+  .app .welcome-mascot {
+    top: 92px;
+  }
+  .app .welcome {
+    min-height: 285px;
+  }
+}
+
+@media (min-width: 951px) and (max-width: 1200px) {
+  .quick-actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .quick-action {
+    min-height: 130px;
+    padding: 17px 15px;
+  }
+  .quick-action strong {
+    font-size: 12px;
+  }
+  .app .dashboard-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+  .visual-task-progress {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+@media (max-width: 360px) {
+  .app .welcome-mascot {
+    top: 115px;
+  }
+}

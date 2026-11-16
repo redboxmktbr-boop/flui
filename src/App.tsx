@@ -1,3 +1,10 @@
+import {
+  QuickActions,
+  TaskProgress,
+  HabitWeek,
+  Evolution,
+  TaskEditor,
+} from "./ProgressExperience";
 import Auth from "./Auth";
 import { Brand, Mascot } from "./Brand";
 import {
@@ -28,6 +35,9 @@ import {
   RotateCcw,
   Sparkles,
   Trash2,
+  Trophy,
+  Search,
+  Target,
   Wind,
   X,
 } from "lucide-react";
@@ -44,7 +54,13 @@ import {
 } from "./domain";
 
 type Page =
-  "Início" | "Tarefas" | "Minha mente" | "Foco" | "Hábitos" | "Assistente";
+  | "Início"
+  | "Tarefas"
+  | "Minha mente"
+  | "Foco"
+  | "Hábitos"
+  | "Assistente"
+  | "Evolução";
 const pages = [
   { name: "Início", icon: Home },
   { name: "Tarefas", icon: ListTodo },
@@ -52,6 +68,7 @@ const pages = [
   { name: "Foco", icon: Clock3 },
   { name: "Hábitos", icon: Leaf },
   { name: "Assistente", icon: Sparkles },
+  { name: "Evolução", icon: Trophy },
 ] as const;
 function Empty({ children }: { children: ReactNode }) {
   return (
@@ -73,10 +90,12 @@ export function Focus({
   onComplete,
   history,
   busy,
+  taskTitle,
 }: {
   onComplete: (seconds: number) => Promise<boolean>;
   history: Data["sessions"];
   busy: boolean;
+  taskTitle?: string;
 }) {
   const [minutes, setMinutes] = useState(25),
     [remaining, setRemaining] = useState(1500),
@@ -119,6 +138,14 @@ export function Focus({
         <section className="card focus-card">
           <span className="eyebrow">UMA COISA DE CADA VEZ</span>
           <h2>Agora é o seu momento.</h2>
+          {taskTitle && (
+            <div className="focus-target">
+              <Target size={17} />
+              <span>
+                Um passo de cada vez: <strong>{taskTitle}</strong>
+              </span>
+            </div>
+          )}
           <p>Escolha um tempo confortável. Pausar também faz parte.</p>
           <div className="duration">
             {[5, 15, 25, 45].map((n) => (
@@ -228,6 +255,14 @@ export function Focus({
 }
 
 export default function App() {
+  const [taskSearch, setTaskSearch] = useState("");
+  const [focusTaskId, setFocusTaskId] = useState<string | null>(null);
+  const [victory, setVictory] = useState("");
+  useEffect(() => {
+    if (!victory) return;
+    const timer = window.setTimeout(() => setVictory(""), 4200);
+    return () => clearTimeout(timer);
+  }, [victory]);
   const [session, setSession] = useState<Session | null>(null),
     [authLoading, setAuthLoading] = useState(!!api.supabase),
     [recovery, setRecovery] = useState(location.hash.includes("type=recovery"));
@@ -247,8 +282,7 @@ export default function App() {
     [habit, setHabit] = useState(""),
     [filter, setFilter] = useState("open"),
     [parent, setParent] = useState<string | null>(null),
-    [editId, setEditId] = useState<string | null>(null),
-    [editTitle, setEditTitle] = useState("");
+    [editId, setEditId] = useState<string | null>(null);
   const userId = useRef<string | null>(null);
   userId.current = session?.user.id ?? null;
   useEffect(() => {
@@ -358,6 +392,22 @@ export default function App() {
     setMenu(false);
     setError("");
   }
+  const visibleTasks = roots.filter((t) => {
+    const matches = t.title
+      .toLocaleLowerCase("pt-BR")
+      .includes(taskSearch.toLocaleLowerCase("pt-BR"));
+    return (
+      matches &&
+      (filter === "all" ||
+        (filter === "done"
+          ? t.done
+          : filter === "today"
+            ? !t.done && !!t.due_date && t.due_date <= day
+            : filter === "upcoming"
+              ? !t.done && !!t.due_date && t.due_date > day
+              : !t.done))
+    );
+  });
   function taskRow(t: Task, child = false): ReactNode {
     return (
       <div
@@ -368,46 +418,31 @@ export default function App() {
           className="check"
           aria-label={`${t.done ? "Reabrir" : "Concluir"} ${t.title}`}
           disabled={disabled}
-          onClick={() => mutate(() => api.updateTask(t.id, { done: !t.done }))}
+          onClick={async () => {
+            if (await mutate(() => api.updateTask(t.id, { done: !t.done }))) {
+              if (!t.done)
+                setVictory("Um pequeno passo concluído. Isso conta! 💜");
+            }
+          }}
         >
           {t.done ? <CheckCircle2 /> : <Circle />}
         </button>
         <div className="task-content">
           {editId === t.id ? (
-            <form
-              className="edit-form"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                if (
-                  await mutate(() => api.updateTask(t.id, { title: editTitle }))
-                )
+            <TaskEditor
+              task={t}
+              disabled={disabled}
+              onCancel={() => setEditId(null)}
+              onSave={async (patch) => {
+                if (await mutate(() => api.updateTask(t.id, patch)))
                   setEditId(null);
               }}
-            >
-              <input
-                aria-label="Editar título"
-                required
-                maxLength={240}
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-              />
-              <button disabled={disabled} aria-label="Salvar título">
-                <Check size={18} />
-              </button>
-              <button
-                type="button"
-                aria-label="Cancelar edição"
-                onClick={() => setEditId(null)}
-              >
-                <X size={18} />
-              </button>
-            </form>
+            />
           ) : (
             <button
               className="task-title"
               onClick={() => {
                 setEditId(t.id);
-                setEditTitle(t.title);
               }}
             >
               {t.title}
@@ -429,6 +464,19 @@ export default function App() {
             )}
           </div>
         </div>
+        {!t.done && (
+          <button
+            className="icon-button focus-task-button"
+            disabled={disabled}
+            aria-label={`Focar em ${t.title}`}
+            onClick={() => {
+              setFocusTaskId(t.id);
+              go("Foco");
+            }}
+          >
+            <Target size={17} />
+          </button>
+        )}
         {!child && (
           <button
             className="icon-button"
@@ -464,6 +512,15 @@ export default function App() {
   }
   return (
     <div className="app">
+      {victory && (
+        <div className="victory-toast" role="status">
+          <CheckCircle2 size={22} />
+          <span>{victory}</span>
+          <button aria-label="Fechar mensagem" onClick={() => setVictory("")}>
+            <X size={16} />
+          </button>
+        </div>
+      )}
       <aside className={`sidebar ${menu ? "open" : ""}`}>
         <Brand light />
         <span className="brand-caption">Sua mente tem seu ritmo.</span>
@@ -544,7 +601,9 @@ export default function App() {
                         ? "Menos distrações, mais presença."
                         : page === "Hábitos"
                           ? "Pequenos cuidados que cabem no seu dia."
-                          : "Mais clareza para transformar ideias em ação."}
+                          : page === "Evolução"
+                            ? "Seu caminho, suas pequenas vitórias. Sem comparação."
+                            : "Mais clareza para transformar ideias em ação."}
               </p>
             </div>
             <button
@@ -586,8 +645,9 @@ export default function App() {
                     <Sparkles size={14} /> CADA PASSO CONTA
                   </span>
                   <h2>
-                    O seu melhor muda.
-                    <br />E está tudo bem.
+                    Seu dia,
+                    <br />
+                    no seu ritmo.
                   </h2>
                   <p>
                     Vamos encontrar espaço para o que importa hoje,
@@ -607,6 +667,7 @@ export default function App() {
                   </span>
                 </div>
               </section>
+              <QuickActions onGo={go} />
               <div className="stats">
                 <div className="stat">
                   <span className="stat-icon purple">
@@ -702,24 +763,11 @@ export default function App() {
                     </button>
                   </form>
                 </section>
-                <section className="card">
-                  <div className="section-title">
-                    <h3>Seus pequenos avanços</h3>
-                    <span className="badge">Sem cobranças</span>
-                  </div>
-                  <p>
-                    {roots.length
-                      ? `${done.length} de ${roots.length} tarefas concluídas. Cada avanço tem valor.`
-                      : "Quando você adicionar tarefas, seus avanços aparecerão aqui."}
-                  </p>
-                  <progress
-                    max={Math.max(roots.length, 1)}
-                    value={done.length}
-                    aria-label="Progresso das tarefas"
+                <section className="card progress-card">
+                  <TaskProgress
+                    tasks={data.tasks}
+                    onOpen={() => go("Evolução")}
                   />
-                  <div className="gentle">
-                    Pausas também fazem parte do caminho. 💜
-                  </div>
                 </section>
                 <section className="card focus-shortcut">
                   <span className="stat-icon blue">
@@ -791,9 +839,20 @@ export default function App() {
                 </form>
               </section>
               <section className="card">
+                <label className="task-search">
+                  <Search size={18} />
+                  <input
+                    aria-label="Buscar tarefas"
+                    placeholder="Encontre um pequeno passo…"
+                    value={taskSearch}
+                    onChange={(event) => setTaskSearch(event.target.value)}
+                  />
+                </label>
                 <div className="tabs" aria-label="Filtrar tarefas">
                   {[
                     ["open", "Em aberto"],
+                    ["today", "Hoje"],
+                    ["upcoming", "Próximas"],
                     ["done", "Concluídas"],
                     ["all", "Todas"],
                   ].map(([v, l]) => (
@@ -807,24 +866,15 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-                {roots
-                  .filter(
-                    (t) =>
-                      filter === "all" ||
-                      (filter === "done" ? t.done : !t.done),
-                  )
-                  .map((t) => (
-                    <div key={t.id}>
-                      {taskRow(t)}
-                      {data.tasks
-                        .filter((s) => s.parent_id === t.id)
-                        .map((s) => taskRow(s, true))}
-                    </div>
-                  ))}
-                {!roots.some(
-                  (t) =>
-                    filter === "all" || (filter === "done" ? t.done : !t.done),
-                ) && (
+                {visibleTasks.map((t) => (
+                  <div key={t.id}>
+                    {taskRow(t)}
+                    {data.tasks
+                      .filter((s) => s.parent_id === t.id)
+                      .map((s) => taskRow(s, true))}
+                  </div>
+                ))}
+                {visibleTasks.length === 0 && (
                   <Empty>
                     {filter === "done"
                       ? "Cada pequeno avanço vai encontrar espaço aqui."
@@ -874,6 +924,20 @@ export default function App() {
                   .map((n) => (
                     <article className="card note" key={n.id}>
                       <p>{n.body}</p>
+                      <button
+                        className="note-to-task"
+                        disabled={disabled}
+                        onClick={() => {
+                          setTaskTitle(n.body.slice(0, 240));
+                          setPriority("normal");
+                          setDue("");
+                          setParent(null);
+                          go("Tarefas");
+                        }}
+                      >
+                        <ListTodo size={16} /> Transformar em tarefa{" "}
+                        <ArrowRight size={14} />
+                      </button>
                       <footer>
                         <small>
                           {new Date(n.created_at).toLocaleDateString("pt-BR")}
@@ -905,6 +969,10 @@ export default function App() {
             <Focus
               busy={disabled}
               history={data.sessions}
+              taskTitle={
+                data.tasks.find((task) => task.id === focusTaskId && !task.done)
+                  ?.title
+              }
               onComplete={(seconds) =>
                 mutate(() =>
                   api.insert("focus_sessions", {
@@ -956,48 +1024,77 @@ export default function App() {
                     (c) => c.habit_id === h.id && c.day === day,
                   );
                   return (
-                    <div className="task-row" key={h.id}>
-                      <button
-                        className="check"
-                        disabled={disabled}
-                        aria-label={`${checkin ? "Desmarcar" : "Registrar"} ${h.title}`}
-                        onClick={() =>
-                          mutate(() =>
-                            checkin
-                              ? api.remove("habit_checkins", checkin.id)
-                              : api.insert("habit_checkins", {
-                                  user_id: uid,
-                                  habit_id: h.id,
-                                  day,
-                                }),
-                          )
-                        }
-                      >
-                        {checkin ? <CheckCircle2 /> : <Circle />}
-                      </button>
-                      <div className="task-content">
-                        <strong>{h.title}</strong>
-                        <p className="gentle">
-                          {checkin
-                            ? "Você cuidou de você hoje."
-                            : "Quando couber no seu dia."}
-                        </p>
-                      </div>
-                      <button
-                        className="icon-button delete"
-                        aria-label={`Excluir hábito ${h.title}`}
-                        disabled={disabled}
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              "Excluir este hábito e seus registros?",
+                    <div className="habit-card" key={h.id}>
+                      <div className="task-row">
+                        <button
+                          className="check"
+                          disabled={disabled}
+                          aria-label={`${checkin ? "Desmarcar" : "Registrar"} ${h.title}`}
+                          onClick={() =>
+                            mutate(() =>
+                              checkin
+                                ? api.remove("habit_checkins", checkin.id)
+                                : api.insert("habit_checkins", {
+                                    user_id: uid,
+                                    habit_id: h.id,
+                                    day,
+                                  }),
                             )
-                          )
-                            void mutate(() => api.remove("habits", h.id));
+                          }
+                        >
+                          {checkin ? <CheckCircle2 /> : <Circle />}
+                        </button>
+                        <div className="task-content">
+                          <strong>{h.title}</strong>
+                          <p className="gentle">
+                            {checkin
+                              ? "Você cuidou de você hoje."
+                              : "Quando couber no seu dia."}
+                          </p>
+                        </div>
+                        <button
+                          className="icon-button delete"
+                          aria-label={`Excluir hábito ${h.title}`}
+                          disabled={disabled}
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "Excluir este hábito e seus registros?",
+                              )
+                            )
+                              void mutate(() => api.remove("habits", h.id));
+                          }}
+                        >
+                          <Trash2 size={17} />
+                        </button>
+                      </div>
+                      <HabitWeek
+                        habitId={h.id}
+                        title={h.title}
+                        checkins={data.checkins}
+                        disabled={disabled}
+                        onToggle={async (selectedDay) => {
+                          const entry = data.checkins.find(
+                            (c) => c.habit_id === h.id && c.day === selectedDay,
+                          );
+                          if (
+                            await mutate(() =>
+                              entry
+                                ? api.remove("habit_checkins", entry.id)
+                                : api.insert("habit_checkins", {
+                                    user_id: uid,
+                                    habit_id: h.id,
+                                    day: selectedDay,
+                                  }),
+                            )
+                          ) {
+                            if (!entry)
+                              setVictory(
+                                "Um cuidado com você acabou de ganhar espaço. 🌱",
+                              );
+                          }
                         }}
-                      >
-                        <Trash2 size={17} />
-                      </button>
+                      />
                     </div>
                   );
                 })}
@@ -1013,6 +1110,7 @@ export default function App() {
               </section>
             </>
           )}
+          {page === "Evolução" && <Evolution data={data} onGo={go} />}
           {page === "Assistente" && (
             <section className="card assistant">
               <span className="stat-icon purple">
@@ -1046,6 +1144,25 @@ export default function App() {
           </footer>
         </main>
       </div>
+      <nav className="mobile-dock" aria-label="Atalhos do aplicativo">
+        {pages
+          .filter((p) =>
+            ["Início", "Tarefas", "Foco", "Hábitos", "Evolução"].includes(
+              p.name,
+            ),
+          )
+          .map((p) => (
+            <button
+              key={p.name}
+              aria-label={`Abrir ${p.name}`}
+              aria-current={page === p.name ? "page" : undefined}
+              onClick={() => go(p.name)}
+            >
+              <p.icon size={21} />
+              <span>{p.name}</span>
+            </button>
+          ))}
+      </nav>
       {overload && (
         <div
           className="overload"
@@ -1090,7 +1207,41 @@ export default function App() {
               Solte os ombros. Respire de um jeito confortável.
             </p>
             <div className="breathing-orb">
-              <Brain size={56} />
+              <Mascot mood="calm" />
+            </div>
+            <div className="calm-choices">
+              <button
+                onClick={() => {
+                  setOverload(false);
+                  go("Minha mente");
+                }}
+              >
+                <Brain size={20} />
+                <span>Quero organizar minha cabeça</span>
+                <ChevronRight size={18} />
+              </button>
+              <button
+                onClick={() => {
+                  setOverload(false);
+                  go("Tarefas");
+                  setFilter("open");
+                }}
+              >
+                <ListTodo size={20} />
+                <span>Quero descobrir por onde começar</span>
+                <ChevronRight size={18} />
+              </button>
+              <button
+                onClick={() => {
+                  setFocusTaskId(next?.id || null);
+                  setOverload(false);
+                  go("Foco");
+                }}
+              >
+                <Clock3 size={20} />
+                <span>Quero ajuda para fazer</span>
+                <ChevronRight size={18} />
+              </button>
             </div>
             <h3>Uma coisa pequena já basta.</h3>
             {next ? (
