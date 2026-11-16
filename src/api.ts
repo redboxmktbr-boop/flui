@@ -1,7 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import { cleanText, type Data, type Task } from "./domain";
-const url = import.meta.env.VITE_SUPABASE_URL;
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+import { projectUrl, publishableKey } from "./supabase-config";
+const url = import.meta.env.VITE_SUPABASE_URL || projectUrl;
+const key =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  publishableKey;
 export const supabase =
   url && key
     ? createClient(url, key, {

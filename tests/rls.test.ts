@@ -25,7 +25,13 @@ beforeAll(async () => {
  insert into auth.users values ('${alice}'),('${bob}');`);
   await db.exec(
     readFileSync(
-      new URL("../supabase/migrations/202611160001_flui.sql", import.meta.url),
+      new URL("../supabase/migrations/20261116202111_flui_initial_schema.sql", import.meta.url),
+      "utf8",
+    ),
+  );
+  await db.exec(
+    readFileSync(
+      new URL("../supabase/migrations/20261116202437_restrict_maintenance_function_access.sql", import.meta.url),
       "utf8",
     ),
   );

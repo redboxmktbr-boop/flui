@@ -8,13 +8,13 @@ Projeto novo e independente, sem código do repositório anterior. React + TypeS
 
 1. Instale Node.js 22.12 ou superior (recomendado: Node.js 24 LTS).
 2. Execute `npm ci`.
-3. Copie `.env.example` para `.env.local`.
-4. Crie um **novo** projeto Supabase e aplique `supabase/migrations/202611160001_flui.sql` no SQL Editor.
-5. Preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` com a URL e chave pública/anon do novo projeto. Nunca use service_role ou chave secreta no frontend.
-6. Em Supabase Auth → URL Configuration, defina Site URL e Redirect URLs para os endereços de desenvolvimento e produção. Configure SMTP antes de enviar e-mails de produção. Mantenha confirmação de e-mail ativada.
+3. Esta versão já aponta para o projeto Supabase **Flui GPT** (`cedtmapgmtuhuzevqiwv`). A configuração em `src/supabase-config.ts` contém somente a URL e uma chave publicável de navegador; as regras RLS protegem os dados.
+4. As duas migrações de `supabase/migrations/` já foram aplicadas nesse projeto. Não execute novamente os scripts nele.
+5. Para usar outra instância, copie `.env.example` para `.env.local`, preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` e aplique as migrações em ordem no novo banco. Nunca use service_role ou chave secreta no frontend. A variável antiga `VITE_SUPABASE_ANON_KEY` ainda é aceita para compatibilidade.
+6. No projeto Flui GPT, Site URL está em `http://127.0.0.1:5173`, com retornos permitidos para esse endereço e `http://localhost:5173`. Quando publicar, substitua Site URL pelo endereço HTTPS definitivo e adicione-o aos Redirect URLs. Configure SMTP antes de enviar e-mails de produção. A confirmação de e-mail está ativada.
 7. Execute `npm run dev`.
 
-Sem configuração, o aplicativo apresenta uma tela explicativa. Não há sessão fictícia, dados de exemplo ou fallback que simule persistência.
+A chave publicável fica visível no código e no aplicativo por definição; ela não é uma chave de administrador. Não há sessão fictícia, dados de exemplo ou fallback que simule persistência.
 
 ## Implementado no código
 
@@ -31,15 +31,15 @@ Sem configuração, o aplicativo apresenta uma tela explicativa. Não há sessã
 
 `npm test` executa testes unitários e de interação. `npm run build` verifica TypeScript e gera a versão de produção em `dist/`.
 
-Os testes de UI usam respostas controladas para isolar o temporizador; isso não simula funcionalidades no aplicativo. Os testes em `tests/rls.test.ts` executam a migração e as políticas reais em PostgreSQL embarcado (PGlite), com duas contas e um visitante. Apenas a infraestrutura Auth do Supabase é fornecida pelo teste. A autenticação por e-mail e o fluxo completo dependem de uma instância Supabase configurada e de entrega de e-mails. A passagem dos testes locais não equivale a uma validação em produção.
+Os testes de UI usam respostas controladas para isolar o temporizador; isso não simula funcionalidades no aplicativo. Os testes em `tests/rls.test.ts` executam as políticas reais em PostgreSQL embarcado (PGlite), com duas contas e um visitante. `supabase/tests/rls_hosted.sql` também foi executado no projeto hospedado, usando uma transação revertida ao final para não deixar usuários ou registros de teste. Verificações HTTP confirmaram Auth ativo e bloqueio anônimo nas cinco tabelas. Entrega de e-mails, confirmação e recuperação ainda exigem uma conta com caixa postal real e URLs de retorno configuradas.
 
 ## Publicar
 
-Qualquer hospedagem estática com HTTPS pode servir `dist/`. No Vercel use o preset Vite, build `npm run build`, saída `dist` e as duas variáveis públicas. O arquivo `vercel.json` define cabeçalhos básicos. A aplicação não usa rotas de servidor. Configurar as URLs de retorno de Auth antes de publicar. HTTPS é necessário para instalação e service worker fora de localhost.
+Qualquer hospedagem estática com HTTPS pode servir `dist/`. No Vercel use o preset Vite, build `npm run build` e saída `dist`. A configuração pública incluída já conecta o projeto Flui GPT; as variáveis de ambiente são opcionais para substituir a instância. O arquivo `vercel.json` define cabeçalhos básicos. A aplicação não usa rotas de servidor. Configurar as URLs de retorno de Auth antes de publicar. HTTPS é necessário para instalação e service worker fora de localhost.
 
 ## Próximas fases
 
-1. Conectar Supabase, executar testes RLS e validar cadastro/recuperação com duas contas reais.
+1. Configurar o endereço de publicação e as URLs de Auth; validar confirmação de e-mail e recuperação com caixa postal real.
 2. IA multimodelo em Edge Functions: JWT verificado, autorização pelo usuário, chaves apenas no servidor, limites de uso, timeout, consentimento explícito antes de enviar pensamentos e escolha/roteamento por tarefa. Nesta versão a área Assistente explica que a IA ainda não está conectada; não produz respostas simuladas.
 3. Progresso de hábitos, edição de prioridade/prazo, lembretes opt-in e fila offline com resolução de conflitos, após validar o núcleo.
 
