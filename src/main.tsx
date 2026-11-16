@@ -6,6 +6,7 @@ import "@fontsource/poppins/latin-600.css";
 import "@fontsource/poppins/latin-700.css";
 import App from "./App";
 import "./style.css";
+import "./brand.css";
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   window.addEventListener("load", () => {
     navigator.serviceWorker

@@ -2,7 +2,7 @@
 
 Sua mente tem seu ritmo.
 
-Projeto novo e independente, sem código do repositório anterior. React + TypeScript + Vite, Supabase Auth/Postgres e PWA. Cores #7562D9, #68B4FF, #A6F3D6 e #FFB07C; Poppins hospedada no próprio aplicativo; mascote cérebro em SVG.
+Projeto novo e independente, sem código do repositório anterior. React + TypeScript + Vite, Supabase Auth/Postgres e PWA. Identidade visual alinhada ao manual e às referências fornecidas pelo usuário: logotipo original, Fluizinho 3D original, roxo profundo com amarelo no celular e lavanda clara no computador. Poppins hospedada no próprio aplicativo. A origem dos arquivos está documentada em `docs/identidade-visual.md`.
 
 ## Executar
 

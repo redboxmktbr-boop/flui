@@ -1,3 +1,5 @@
+import Auth from "./Auth";
+import { Brand, Mascot } from "./Brand";
 import {
   useEffect,
   useRef,
@@ -51,15 +53,6 @@ const pages = [
   { name: "Hábitos", icon: Leaf },
   { name: "Assistente", icon: Sparkles },
 ] as const;
-function Mascot() {
-  return (
-    <img
-      className="mascot"
-      src="/icon.svg"
-      alt="Fluizinho, um cérebro sorridente"
-    />
-  );
-}
 function Empty({ children }: { children: ReactNode }) {
   return (
     <div className="empty">
@@ -74,214 +67,6 @@ function errorMessage(error: unknown) {
   return error instanceof Error
     ? error.message
     : "Não conseguimos salvar agora. Tente novamente.";
-}
-
-function Auth({
-  recovery,
-  onRecovered,
-}: {
-  recovery: boolean;
-  onRecovered: () => void;
-}) {
-  const [mode, setMode] = useState<"login" | "signup" | "reset" | "password">(
-    recovery ? "password" : "login",
-  );
-  const [email, setEmail] = useState(""),
-    [password, setPassword] = useState(""),
-    [name, setName] = useState(""),
-    [message, setMessage] = useState(""),
-    [busy, setBusy] = useState(false);
-  useEffect(() => {
-    if (recovery) setMode("password");
-  }, [recovery]);
-  async function submit(e: FormEvent) {
-    e.preventDefault();
-    if (!api.supabase) return;
-    setBusy(true);
-    setMessage("");
-    try {
-      if (mode === "reset") {
-        const { error } = await api.supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: location.origin,
-        });
-        if (error) throw error;
-        setMessage(
-          "Se houver uma conta com esse e-mail, enviaremos um link de recuperação.",
-        );
-      } else if (mode === "password") {
-        const { error } = await api.supabase.auth.updateUser({ password });
-        if (error) throw error;
-        onRecovered();
-      } else if (mode === "signup") {
-        const { data, error } = await api.supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { name: cleanText(name, 80) },
-            emailRedirectTo: location.origin,
-          },
-        });
-        if (error) throw error;
-        if (!data.session)
-          setMessage("Verifique seu e-mail para confirmar a conta e entrar.");
-      } else {
-        const { error } = await api.supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-      }
-    } catch (e) {
-      setMessage(errorMessage(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-  return (
-    <main className="auth">
-      <section className="auth-story">
-        <a className="brand" href="/">
-          flui<span>●</span>
-        </a>
-        <span className="eyebrow">MENOS PRESSÃO. MAIS POSSIBILIDADES.</span>
-        <h1>
-          Sua mente
-          <br />
-          tem seu <em>ritmo.</em>
-        </h1>
-        <p>
-          Um lugar para organizar as ideias, encontrar seu foco e dar o próximo
-          pequeno passo.
-        </p>
-        <Mascot />
-        <span className="story-caption">Com você, um passo de cada vez.</span>
-      </section>
-      <section className="auth-form">
-        <span className="eyebrow">SEU ESPAÇO PARA RESPIRAR</span>
-        <h2>
-          {mode === "signup"
-            ? "Vamos começar?"
-            : mode === "reset"
-              ? "Recupere seu acesso"
-              : mode === "password"
-                ? "Escolha uma nova senha"
-                : "Que bom ter você aqui."}
-        </h2>
-        <p>Você não precisa dar conta de tudo de uma vez.</p>
-        {!api.supabase ? (
-          <div className="setup" role="status">
-            <Brain />
-            <h3>A FLUI está ganhando vida</h3>
-            <p>
-              O aplicativo precisa ser conectado ao Supabase para criar sua
-              conta e guardar suas informações.
-            </p>
-            <p>
-              A configuração está explicada no README do projeto. Depois da
-              conexão, cadastro e login serão liberados.
-            </p>
-            <span className="badge">Configuração pendente</span>
-          </div>
-        ) : (
-          <>
-            <form onSubmit={submit}>
-              {mode === "signup" && (
-                <label>
-                  Como podemos chamar você?
-                  <input
-                    required
-                    maxLength={80}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    autoComplete="given-name"
-                  />
-                </label>
-              )}
-              {mode !== "password" && (
-                <label>
-                  E-mail
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                  />
-                </label>
-              )}
-              {mode !== "reset" && (
-                <label>
-                  Senha
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete={
-                      mode === "login" ? "current-password" : "new-password"
-                    }
-                  />
-                </label>
-              )}
-              <button className="primary" disabled={busy}>
-                {busy
-                  ? "Só um instante…"
-                  : mode === "signup"
-                    ? "Criar minha conta"
-                    : mode === "reset"
-                      ? "Enviar link"
-                      : mode === "password"
-                        ? "Salvar nova senha"
-                        : "Entrar no meu espaço"}
-                <ArrowRight size={18} />
-              </button>
-            </form>
-            <p className="auth-switch">
-              {mode === "login" ? (
-                <>
-                  <button
-                    className="link"
-                    onClick={() => {
-                      setMode("reset");
-                      setMessage("");
-                    }}
-                  >
-                    Esqueci minha senha
-                  </button>
-                  <br />
-                  Primeira vez aqui?{" "}
-                  <button
-                    className="link"
-                    onClick={() => {
-                      setMode("signup");
-                      setMessage("");
-                    }}
-                  >
-                    Criar conta
-                  </button>
-                </>
-              ) : (
-                mode !== "password" && (
-                  <button
-                    className="link"
-                    onClick={() => {
-                      setMode("login");
-                      setMessage("");
-                    }}
-                  >
-                    Voltar para entrar
-                  </button>
-                )
-              )}
-            </p>
-            <p role="status">{message}</p>
-          </>
-        )}
-        <footer>Feito para o seu jeito de funcionar. 💜</footer>
-      </section>
-    </main>
-  );
 }
 
 export function Focus({
@@ -401,7 +186,7 @@ export function Focus({
           )}
         </section>
         <aside className="card focus-tip">
-          <Mascot />
+          <Mascot mood="calm" />
           <h3>Um pequeno combinado?</h3>
           <p>
             Deixe por perto só o que você precisa agora. O resto pode esperar um
@@ -680,9 +465,7 @@ export default function App() {
   return (
     <div className="app">
       <aside className={`sidebar ${menu ? "open" : ""}`}>
-        <a href="/" className="brand">
-          flui<span>●</span>
-        </a>
+        <Brand light />
         <span className="brand-caption">Sua mente tem seu ritmo.</span>
         <nav aria-label="Navegação principal">
           {pages.map((p) => (

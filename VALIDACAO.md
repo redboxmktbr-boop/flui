@@ -5,7 +5,8 @@
 - `npm test`: 20 testes aprovados em quatro arquivos.
 - `npm run build`: TypeScript e compilação de produção aprovados; geração do service worker aprovada.
 - `npm audit`: nenhuma vulnerabilidade conhecida nas dependências instaladas.
-- Interface de configuração conferida no navegador local com fontes e mascote carregados.
+- Identidade visual conferida no navegador em computador e em viewport de celular de 390 × 844: logotipo e mascotes originais extraídos do manual, com Poppins local.
+- Navegação entre login, cadastro e recuperação conferida; controle de mostrar/ocultar senha conferido sem enviar credenciais.
 - Migração executada em PostgreSQL embarcado com testes de isolamento entre dois usuários e visitante. Inclusão, consulta, alteração, exclusão, referências entre contas e check-in duplicado cobertos.
 
 ## Limites da verificação
